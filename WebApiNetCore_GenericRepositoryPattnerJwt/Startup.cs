@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
+using WebApiNetCore_GenericRepositoryPattnerJwt.Core.Interface;
+using WebApiNetCore_GenericRepositoryPattnerJwt.Core.Models;
+using WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository;
 
 namespace WebApiNetCore_GenericRepositoryPattnerJwt
 {
@@ -24,15 +32,55 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            services.AddDbContext<EscolaContext>(options =>
+    options.UseSqlServer(Configuration.GetConnectionString("DBES")));
 
+
+          
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //         .AddJwtBearer(options =>
+            //         {
+            //             options.TokenValidationParameters = new TokenValidationParameters
+            //             {
+            //                 ValidateIssuer = true,
+            //                 ValidateAudience = true,
+            //                 ValidateLifetime = true,
+            //                 ValidateIssuerSigningKey = true,
+            //                 ValidIssuer = Configuration["Jwt:Issuer"],
+            //                 ValidAudience = Configuration["Jwt:Issuer"],
+            //                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            //             };
+            //         });
+
+
+
+            //services.AddMvc(opts => {
+            //    opts.Filters.Add(new AutoLogAttribute());
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddSingleton<IUnitOfWork, UnitOfWork>();
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "VCM 3X",
+                    Description = "Op2B VCm 3X  ASP.NET Core Web API",
+                    TermsOfService = "None",
+                    Contact = new Contact() { Name = "Talking to Developer", Email = "cristovao.ftorres@hotmail.com", Url = "http://op2b.com.br/" }
+                });
+            });
+
+            services.AddMvc();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,16 +96,23 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
+            app.UseAuthentication();
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            app.UseMvc();
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //});
         }
     }
 }

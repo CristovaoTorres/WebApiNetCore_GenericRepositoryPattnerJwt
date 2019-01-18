@@ -8,6 +8,8 @@ using WebApiNetCore_GenericRepositoryPattnerJwt.Models;
 
 namespace WebApiNetCore_GenericRepositoryPattnerJwt.Controllers
 {
+
+    //[Route("api/[controller]")/*, Authorize*/]
     public class HomeController : Controller
     {
         public IActionResult Index()
