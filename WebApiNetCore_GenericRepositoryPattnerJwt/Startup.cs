@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,7 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddAutoMapper();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<IUnitOfWork, UnitOfWork>();
@@ -99,7 +101,6 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt
 
             app.UseAuthentication();
 
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -107,12 +108,6 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt
             });
 
             app.UseMvc();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
         }
     }
 }

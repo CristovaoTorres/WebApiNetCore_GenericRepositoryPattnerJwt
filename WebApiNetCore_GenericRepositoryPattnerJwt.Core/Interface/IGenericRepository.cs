@@ -10,7 +10,7 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Interface
     {
         IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
 
-        IEnumerable<TEntity> Get(
+        IQueryable<TEntity> Get(
            Expression<Func<TEntity, bool>> filter = null,
            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
            string includeProperties = "");

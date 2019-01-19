@@ -27,11 +27,8 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
         #region Gets
         public virtual IQueryable<TEntity> GetAll()
         {
-
             return dbSet.AsQueryable();
         }
-
-
 
         public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
@@ -57,8 +54,6 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
             try
             {
                 var query = dbSet.AsQueryable();
-
-
 
                 if (!string.IsNullOrEmpty(includeProperties))
                 {
@@ -93,7 +88,7 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
             }
         }
 
-        public virtual IEnumerable<TEntity> Get(
+        public virtual IQueryable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
@@ -101,9 +96,7 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
             IQueryable<TEntity> query = dbSet;
 
             if (filter != null)
-            {
                 query = query.Where(filter);
-            }
 
             if (!string.IsNullOrEmpty(includeProperties))
             {
@@ -115,13 +108,9 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
             }
 
             if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
+                return orderBy(query);
             else
-            {
-                return query.ToList();
-            }
+                return query;
         }
 
         public virtual TEntity GetWithIncludeAll(Expression<Func<TEntity, bool>> filter = null)
@@ -130,9 +119,7 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
             IQueryable<TEntity> query = dbSet;
 
             if (filter != null)
-            {
                 query = query.Where(filter);
-            }
 
 
             foreach (var property in _context.Model.FindEntityType(typeof(TEntity)).GetNavigations())
@@ -145,15 +132,12 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Core.Repository
 
         public virtual TEntity GetQuery(
             Expression<Func<TEntity, bool>> filter = null,
-            //Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
 
             if (filter != null)
-            {
                 query = query.Where(filter);
-            }
 
             if (!string.IsNullOrEmpty(includeProperties))
             {
