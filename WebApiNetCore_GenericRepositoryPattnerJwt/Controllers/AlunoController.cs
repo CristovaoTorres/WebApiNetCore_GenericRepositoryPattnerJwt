@@ -14,13 +14,13 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Controllers
     [Route("api/[controller]")/*, Authorize*/]
     public class AlunoController : Controller
     {
-        //private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfw;
 
-        public AlunoController(IUnitOfWork unitOfw/*, IMapper mapper*/)
+        public AlunoController(IUnitOfWork unitOfw, IMapper mapper)
         {
             _unitOfw = unitOfw;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
 
         [Route("AddOrUpdate")]
@@ -30,8 +30,8 @@ namespace WebApiNetCore_GenericRepositoryPattnerJwt.Controllers
 
             if (_unitOfw.AlunoRepository.Count(y => y.Nome == model.Nome) == 0)
             {
-                //Aluno tobeSave = _mapper.Map<Aluno>(model);
-                _unitOfw.AlunoRepository.Insert(new Aluno());
+                Aluno tobeSave = _mapper.Map<Aluno>(model);
+                _unitOfw.AlunoRepository.Insert(tobeSave);
             }
             else
             {
