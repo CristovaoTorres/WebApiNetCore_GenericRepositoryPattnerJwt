@@ -71,9 +71,12 @@ Install-Package Microsoft.AspNetCore.Authentication.JwtBearer -Version 2.2.0
 
 Install-Package AutoMapper -Version 7.0.1	
 
+Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection -Version 5.0.1
+
 Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 2.1.4
 
 Install-Package Microsoft.EntityFrameworkCore.Tools -Version 2.1.4
+
 
 
 
