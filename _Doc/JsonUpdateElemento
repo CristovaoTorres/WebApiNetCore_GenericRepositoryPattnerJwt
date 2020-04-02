@@ -1,0 +1,36 @@
+{
+  "items": {
+    "available": [
+      
+    ],
+    "selected": [
+    
+    ],
+    "posted": [
+      0
+    ]
+  },
+  "elementos": {
+    "descricao":"Descrição",
+         "codigo":"UM1",
+         "id":33551,
+         "tipoEntidadeId":223,
+         "topologiaId":7135,
+         "nota":"Nota Nota",
+         "isConector":false,
+         "localizacao":"PR",
+         "isFornecimento":false
+		 },
+  "localizacoes": [
+    {
+      "disabled": true,
+      "group": {
+        "disabled": true,
+        "name": "string"
+      },
+      "selected": true,
+      "text": "Paraná",
+      "value": "PR"
+    }
+  ]
+}
